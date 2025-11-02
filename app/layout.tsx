@@ -5,6 +5,7 @@ import Navbar from "@/components/features/Navbar";
 import Footer from "@/components/features/Footer";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import ModeToggle from "@/components/features/ModeToggle";
+import { Toaster } from "@/components/ui/sonner";
 const radio = Radio_Canada({
   subsets: ["latin"],
   weight: ["400", "600"],
@@ -38,6 +39,7 @@ export default function RootLayout({
         {children}
       <Footer />
       <ModeToggle />
+      <Toaster />
       </ThemeProvider>
       </body>
     </html>
