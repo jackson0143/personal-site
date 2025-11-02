@@ -27,10 +27,10 @@ export async function createComment(input: { name: string; message: string; }): 
   const name = input.name.trim();
   const message = input.message.trim();
   if (name.length === 0 || name.length > 50) {
-    throw new Error("Invalid name length");
+    throw new Error("Invalid name, must be between 1 and 50 characters");
   }
   if (message.length === 0 || message.length > 300) {
-    throw new Error("Invalid message length");
+    throw new Error("Invalid message, must be between 1 and 300 characters");
   }
 
   const created = await prisma.comment.create({
