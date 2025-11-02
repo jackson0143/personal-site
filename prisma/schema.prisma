@@ -1,0 +1,18 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+model Comment {
+    id        String   @id @default(cuid())
+    name      String   @db.VarChar(50)
+    message   String   @db.VarChar(300)
+    createdAt DateTime @default(now())
+
+    @@index([createdAt])
+}
