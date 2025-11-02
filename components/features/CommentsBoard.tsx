@@ -10,29 +10,8 @@ type Comment = {
   createdAt: string; // ISO string
 };
 
-const initialComments: Comment[] = [
-  {
-    id: "c1",
-    name: "Alex",
-    message: "Love the clean design!",
-    createdAt: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
-  },
-  {
-    id: "c2",
-    name: "Sam",
-    message: "Congrats on launching the site 👏",
-    createdAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
-  },
-  {
-    id: "c3",
-    name: "Taylor",
-    message: "Dark mode toggle is slick.",
-    createdAt: new Date(Date.now() - 1000 * 60 * 10).toISOString(),
-  },
-];
-
 export default function CommentsBoard() {
-    const [comments, setComments] = React.useState<Comment[]>(initialComments);
+    const [comments, setComments] = React.useState<Comment[]>([]);
     const [name, setName] = React.useState("");
     const [message, setMessage] = React.useState("");
     const [submitting, setSubmitting] = React.useState(false);
