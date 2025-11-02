@@ -5,6 +5,7 @@ import * as React from "react";
 import { useState } from "react";
 import CommentsBox from "@/components/features/CommentsBox";
 import { createComment } from "@/app/comments/actions";
+import { toast } from "sonner";
 type Comment = {
   id: string;
   name: string;
@@ -34,6 +35,7 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
             setComments((prev) => [created, ...prev]);
             setName("");
             setMessage("");
+            toast.success("Comment successfully posted");
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to post comment");
         } finally {
