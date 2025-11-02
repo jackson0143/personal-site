@@ -15,16 +15,25 @@ export default function Navbar() {
       <span className="font-semibold">Jackson Nguyen</span>
       <NavigationMenu>
         <NavigationMenuList>
+
           <NavigationMenuItem>
             <NavigationMenuLink>
               <Link href="/" className={linkClass("/")} >Home</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
+
           <NavigationMenuItem>
             <NavigationMenuLink>
               <Link href="/about" className={linkClass("/about")} >About</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuLink>
+              <Link href="/comments" className={linkClass("/comments")}>Comments</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+
           <NavigationMenuItem>
             <NavigationMenuLink>
               <Link href="/contact" className={linkClass("/contact")}>Contact</Link>

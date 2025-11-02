@@ -9,7 +9,7 @@ export default function ResumeSection({ title, children}: ResumeSectionProps) {
   return (
     <section className="w-full">
       <h2 className="font-bold pt-10 pb-2 text-lg">
-        <span className="bg-gradient-to-r from-sky-600 to-cyan-400 bg-clip-text text-transparent">
+        <span className="main-header">
           {title}
         </span>
       </h2>

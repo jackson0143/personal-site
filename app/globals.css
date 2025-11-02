@@ -120,3 +120,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .main-header {
+    @apply bg-gradient-to-r from-sky-600 to-cyan-400 bg-clip-text text-transparent;
+  }
+}
