@@ -2,16 +2,20 @@
 
 import * as React from "react";
 import CommentsBox from "@/components/features/CommentsBox";
-
+import { createComment } from "@/app/comments/actions";
 type Comment = {
   id: string;
   name: string;
   message: string;
-  createdAt: string; // ISO string
+  createdAt: string; 
 };
 
-export default function CommentsBoard() {
-    const [comments, setComments] = React.useState<Comment[]>([]);
+type CommentsBoardProps = {
+  initialComments: Comment[];
+};
+
+export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
+    const [comments, setComments] = React.useState<Comment[]>(initialComments ?? []);
     const [name, setName] = React.useState("");
     const [message, setMessage] = React.useState("");
     const [submitting, setSubmitting] = React.useState(false);
@@ -21,21 +25,18 @@ export default function CommentsBoard() {
     const messageValid = message.trim().length > 0 && message.trim().length <= 300;
     const canSubmit = nameValid && messageValid && !submitting;
 
-    function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (!canSubmit) return;
         setSubmitting(true);
-        const now = new Date().toISOString();
-        const newComment: Comment = {
-        id: `c-${Date.now()}`,
-        name: name.trim(),
-        message: message.trim(),
-        createdAt: now,
-        };
-        setComments((prev) => [newComment, ...prev]);
-        setName("");
-        setMessage("");
-        setSubmitting(false);
+        try {
+            const created = await createComment({ name: name.trim(), message: message.trim() });
+            setComments((prev) => [created, ...prev]);
+            setName("");
+            setMessage("");
+        } finally {
+            setSubmitting(false);
+        }
   }
 
   return (
