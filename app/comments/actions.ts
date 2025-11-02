@@ -2,6 +2,7 @@
 
 import { PrismaClient } from "../../generated/prisma";
 import { cookies } from "next/headers";
+import { unstable_noStore as noStore } from "next/cache";
 
 const prisma = new PrismaClient();
 
@@ -13,6 +14,7 @@ export type CommentRecord = {
 };
 
 export async function getComments(): Promise<CommentRecord[]> {
+  noStore();
   const comments = await prisma.comment.findMany({
     orderBy: { createdAt: "desc" },
   });
