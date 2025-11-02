@@ -2,7 +2,7 @@ export default function About() {
   return (
     <main className="flex flex-col gap-4">
       <h1 className="font-bold pt-10 pb-2 text-xl">
-        <span className="bg-gradient-to-r from-sky-600 to-cyan-400 bg-clip-text text-transparent">About me</span>
+        <span className="main-header">About me</span>
       </h1>
 
       <p className="leading-relaxed">
