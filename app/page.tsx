@@ -68,7 +68,7 @@ export default function Home() {
           right={
             <>
               <Link
-                href="https://github.com/jackson0143/Proxmox-Mobile-Dashboard"
+                href="https://github.com/jackson0143/proxmox-dashboard-mobile"
                 className="hover:underline"
               >
                 GitHub
