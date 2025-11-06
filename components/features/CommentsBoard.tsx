@@ -6,6 +6,9 @@ import { useState } from "react";
 import CommentsBox from "@/components/features/CommentsBox";
 import { createComment } from "@/app/comments/actions";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 type Comment = {
   id: string;
   name: string;
@@ -49,13 +52,12 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
         <fieldset disabled={submitting} className="space-y-3">
           <div className="flex flex-col gap-2">
             <label className="text-sm">Name</label>
-            <input
+            <Input
+              type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Your name"
-              className="w-full rounded-md border bg-background px-3 py-2 text-sm"
               maxLength={50}
-   
               autoComplete="name"
             />
             <div className="text-xs text-muted-foreground">{name.trim().length}/50</div>
@@ -63,14 +65,12 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
 
           <div className="flex flex-col gap-2">
             <label className="text-sm">Message</label>
-            <textarea
+            <Textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Say something nice…"
               rows={4}
-              className="w-full resize-y rounded-md border bg-background px-3 py-2 text-sm"
               maxLength={300}
-             
             />
             <div className="text-xs text-muted-foreground">{message.trim().length}/300</div>
           </div>
@@ -80,13 +80,9 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
           ) : null}
 
           {/*submit*/}
-          <button
-            type="submit"
-            disabled={submitting}
-            className="rounded-md border px-3 py-2 text-sm disabled:opacity-50 hover:bg-accent hover:text-accent-foreground"
-          >
+          <Button type="submit" variant="outline" disabled={submitting}>
             {submitting ? "Submitting…" : "Post comment"}
-          </button>
+          </Button>
         </fieldset>
       </form>
 
