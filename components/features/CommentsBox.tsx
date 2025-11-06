@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { Card, CardHeader, CardTitle, CardAction, CardContent } from "@/components/ui/card";
 
 type CommentBoxProps = {
   name: string;
@@ -10,14 +10,18 @@ type CommentBoxProps = {
 
 export default function CommentsBox({ name, message, createdAt }: CommentBoxProps) {
   return (
-    <article className="rounded-lg border p-3">
-      <div className="flex items-baseline justify-between gap-3">
-        <strong className="text-sm">{name}</strong>
-        <time className="text-xs text-muted-foreground">
-          {new Date(createdAt).toLocaleString()}
-        </time>
-      </div>
-      <p className="mt-1 text-sm leading-relaxed">{message}</p>
-    </article>
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle className="text-sm">{name}</CardTitle>
+        <CardAction>
+          <time className="text-xs text-muted-foreground">
+            {new Date(createdAt).toLocaleString()}
+          </time>
+        </CardAction>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm leading-relaxed">{message}</p>
+      </CardContent>
+    </Card>
   );
 }
