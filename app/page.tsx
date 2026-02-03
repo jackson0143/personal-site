@@ -101,13 +101,37 @@ export default function Home() {
           subtitle="StudySync"
           right={
             <>
-              <Link href="https://devpost.com/software/studysync-vpr31h/">
-                <u>Devpost</u>
+              <Link
+                href="https://devpost.com/software/studysync-vpr31h/"
+                className="hover:underline"
+              >
+                <p>Devpost</p>
               </Link>
             </>
           }
         >
           <p>UNIHACK 2025</p>
+        </ResumeItem>
+      </ResumeSection>
+
+      <ResumeSection title="Publications">
+        <ResumeItem
+          subtitle="ICSE MSSiS 2026"
+          right={
+            <>
+              <Link
+                href="https://conf.researchr.org/home/icse-2026/mssis-2026#Accepted-Papers"
+                className="hover:underline"
+              >
+                <p>Link</p>
+              </Link>
+            </>
+          }
+        >
+          <p>
+            Class Model Generation from Requirements using Large Language Models
+            (accepted to the ICSE MSSiS 2026 workshop).
+          </p>
         </ResumeItem>
       </ResumeSection>
     </main>
