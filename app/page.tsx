@@ -120,7 +120,7 @@ export default function Home() {
           right={
             <>
               <Link
-                href="https://conf.researchr.org/home/icse-2026/mssis-2026#Accepted-Papers"
+                href="https://arxiv.org/abs/2603.09100"
                 className="hover:underline"
               >
                 <p>Link</p>
