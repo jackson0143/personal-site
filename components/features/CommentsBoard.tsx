@@ -26,6 +26,8 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
     const [message, setMessage] = useState("");
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    // fake field, bots might be fooled
+    const [website, setWebsite] = useState("");
 
     async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -34,7 +36,7 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
         try {
             const trimmedName = name.trim();
             const trimmedMessage = message.trim();
-            const created = await createComment({ name: trimmedName, message: trimmedMessage });
+            const created = await createComment({ name: trimmedName, message: trimmedMessage, website });
             setComments((prev) => [created, ...prev]);
             setName("");
             setMessage("");
@@ -49,6 +51,17 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
   return (
     <div className="flex flex-col gap-6">
       <form onSubmit={onSubmit} className="space-y-3" aria-busy={submitting}>
+        {/*Fake field, dont remove*/}
+        <input
+          type="text"
+          name="website"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="absolute left-[-9999px] h-0 w-0 opacity-0"
+        />
         <fieldset disabled={submitting} className="space-y-3">
           <div className="flex flex-col gap-2">
             <label className="text-sm">Name</label>

@@ -1,10 +1,14 @@
 "use server";
 
 import { PrismaClient } from "../../generated/prisma";
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
+import { createHash, randomUUID } from "crypto";
 import { unstable_noStore as noStore } from "next/cache";
 
 const prisma = new PrismaClient();
+
+const DAILY_LIMIT = 5;
+const WINDOW_MS = 24 * 60 * 60 * 1000;
 
 export type CommentRecord = {
   id: string;
@@ -12,6 +16,28 @@ export type CommentRecord = {
   message: string;
   createdAt: string;
 };
+
+function hashIp(ip: string): string {
+  const salt = process.env.IP_HASH_SALT;
+  if (!salt) {
+    throw new Error("IP_HASH_SALT is not configured");
+  }
+  return createHash("sha256").update(`${ip}${salt}`).digest("hex");
+}
+
+// Returns a salted hash of the client IP
+async function getClientIpHash(): Promise<string | null> {
+  const headerStore = await headers();
+  const forwarded = headerStore.get("x-forwarded-for");
+  if (!forwarded) {
+    return null;
+  }
+  const ip = forwarded.split(",")[0].trim();
+  if (!ip) {
+    return null;
+  }
+  return hashIp(ip);
+}
 
 export async function getComments(): Promise<CommentRecord[]> {
   noStore();
@@ -26,7 +52,11 @@ export async function getComments(): Promise<CommentRecord[]> {
   }));
 }
 
-export async function createComment(input: { name: string; message: string; }): Promise<CommentRecord> {
+export async function createComment(input: {
+  name: string;
+  message: string;
+  website?: string;
+}): Promise<CommentRecord> {
   const name = input.name.trim();
   const message = input.message.trim();
   if (name.length === 0 || name.length > 50) {
@@ -36,34 +66,34 @@ export async function createComment(input: { name: string; message: string; }): 
     throw new Error("Invalid message, must be between 1 and 300 characters");
   }
 
- 
-  const cookieStore = await cookies();
-  const RATE_COOKIE = "commentDaily";
-  const now = new Date();
-  const today = now.toISOString().slice(0, 10); 
-  const [storedDate, storedCount] = (cookieStore.get(RATE_COOKIE)?.value ?? "").split("|");
-  const count = storedDate === today ? Number(storedCount) || 0 : 0;
-  if (count >= 3) {
-    throw new Error("Daily limit reached. You can post up to 3 comments per day");
+  //BOTS BE GONE!!
+  if (input.website && input.website.trim().length > 0) {
+    return {
+      id: randomUUID(),
+      name,
+      message,
+      createdAt: new Date().toISOString(),
+    };
+  }
+
+  const ipHash = await getClientIpHash();
+
+  if (ipHash) {
+    const since = new Date(Date.now() - WINDOW_MS);
+    const recentCount = await prisma.comment.count({
+      where: { ipHash, createdAt: { gte: since } },
+    });
+    if (recentCount >= DAILY_LIMIT) {
+      throw new Error(
+        "Daily limit reached. You can post up to 5 comments per day"
+      );
+    }
   }
 
   const created = await prisma.comment.create({
-    data: { name, message },
+    data: { name, message, ipHash },
   });
 
-  
-  const nextMidnightUtc = new Date(Date.UTC(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate() + 1,
-    0, 0, 0, 0
-  ));
-  cookieStore.set(RATE_COOKIE, `${today}|${count + 1}`, {
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/",
-    expires: nextMidnightUtc,
-  });
   return {
     id: created.id,
     name: created.name,

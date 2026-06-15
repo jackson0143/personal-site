@@ -1,6 +1,7 @@
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_ANY")
 }
 
 generator client {
@@ -12,7 +13,9 @@ model Comment {
     id        String   @id @default(cuid())
     name      String   @db.VarChar(50)
     message   String   @db.VarChar(300)
+    ipHash    String?
     createdAt DateTime @default(now())
 
     @@index([createdAt])
+    @@index([ipHash, createdAt])
 }
