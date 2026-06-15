@@ -17,6 +17,20 @@ export type CommentRecord = {
   createdAt: string;
 };
 
+function toRecord(comment: {
+  id: string;
+  name: string;
+  message: string;
+  createdAt: Date;
+}): CommentRecord {
+  return {
+    id: comment.id,
+    name: comment.name,
+    message: comment.message,
+    createdAt: comment.createdAt.toISOString(),
+  };
+}
+
 function hashIp(ip: string): string {
   const salt = process.env.IP_HASH_SALT;
   if (!salt) {
@@ -28,11 +42,9 @@ function hashIp(ip: string): string {
 // Returns a salted hash of the client IP
 async function getClientIpHash(): Promise<string | null> {
   const headerStore = await headers();
-  const forwarded = headerStore.get("x-forwarded-for");
-  if (!forwarded) {
-    return null;
-  }
-  const ip = forwarded.split(",")[0].trim();
+  const ip =
+    headerStore.get("x-real-ip")?.trim() ||
+    headerStore.get("x-forwarded-for")?.split(",")[0].trim();
   if (!ip) {
     return null;
   }
@@ -44,12 +56,7 @@ export async function getComments(): Promise<CommentRecord[]> {
   const comments = await prisma.comment.findMany({
     orderBy: { createdAt: "desc" },
   });
-  return comments.map((c) => ({
-    id: c.id,
-    name: c.name,
-    message: c.message,
-    createdAt: c.createdAt.toISOString(),
-  }));
+  return comments.map(toRecord);
 }
 
 export async function createComment(input: {
@@ -94,10 +101,5 @@ export async function createComment(input: {
     data: { name, message, ipHash },
   });
 
-  return {
-    id: created.id,
-    name: created.name,
-    message: created.message,
-    createdAt: created.createdAt.toISOString(),
-  };
+  return toRecord(created);
 }
