@@ -1,4 +1,10 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: "I'm open to collaborations and interesting things to build. Reach out via LinkedIn or GitHub.",
+};
 
 const CHANNELS = [
   {

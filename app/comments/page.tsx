@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import CommentsBoard from "../../components/features/CommentsBoard";
 import { getComments } from "./actions";
+
+export const metadata: Metadata = {
+  title: "Comments",
+  description: "Leave a kind message on the comment board.",
+};
 
 export default async function CommentsPage() {
   const comments = await getComments();

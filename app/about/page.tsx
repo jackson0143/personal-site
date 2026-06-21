@@ -1,4 +1,10 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "A bit about me, what I'm building, and the homelab I tinker with.",
+};
 
 export default function About() {
   return (
@@ -28,7 +34,7 @@ export default function About() {
           Outside of work, I play around with homelab stuff like virtualisation, network management, and deploying various services. It&rsquo;s a fantastic way to learn the infrastructure and
           design choices behind modern applications, and teaches me how to design,
           troubleshoot, and deploy in real environments. Of course I also use it to host
-          my own projects and game servers 😀
+          my own projects and game servers.
         </p>
 
         <p style={{ marginTop: "18px" }}>
