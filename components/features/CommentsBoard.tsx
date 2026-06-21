@@ -72,6 +72,7 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
               placeholder="Your name"
               maxLength={50}
               autoComplete="name"
+              className="text-[15px] md:text-[15px]"
             />
             <div className="text-xs text-muted-foreground self-end">{name.trim().length}/50</div>
           </div>
@@ -84,6 +85,7 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
               placeholder="Say something nice…"
               rows={4}
               maxLength={300}
+              className="text-[15px] md:text-[15px]"
             />
             <div className="text-xs text-muted-foreground self-end">{message.trim().length}/300</div>
           </div>
@@ -105,7 +107,7 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
           <CommentsBox key={c.id} name={c.name} message={c.message} createdAt={c.createdAt} />
         ))}
         {comments.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No comments yet.</p>
+          <p className="text-muted-foreground">No comments yet.</p>
         ) : null}
       </div>
     </div>

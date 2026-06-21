@@ -11,7 +11,9 @@ export default function CommentsBox({ name, message, createdAt }: CommentBoxProp
     <div className="comment">
       <div className="comment-head">
         <span className="comment-name">{name}</span>
-        <time className="comment-time">{new Date(createdAt).toLocaleString()}</time>
+        <time className="comment-time" dateTime={createdAt} suppressHydrationWarning>
+          {new Date(createdAt).toLocaleString()}
+        </time>
       </div>
       <p>{message}</p>
     </div>

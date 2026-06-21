@@ -12,7 +12,7 @@ export default async function CommentsPage() {
         </h2>
         <span className="section-label">Guestbook</span>
       </div>
-      <p className="text-muted-foreground" style={{ marginBottom: "32px" }}>
+      <p style={{ marginBottom: "32px" }}>
         Leave a kind message below.
       </p>
       {/* pass the comments to the CommentsBoard component */}
