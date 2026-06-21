@@ -1,22 +1,34 @@
 import * as React from "react";
 
 type ResumeItemProps = React.PropsWithChildren<{
-  subtitle?: React.ReactNode; // subtitle content
-  right?: React.ReactNode; //right side content (eg links)
+  subtitle?: React.ReactNode;
+  right?: React.ReactNode;
+  /** "experience" = blue date label + description; "list" = compact row */
+  variant?: "experience" | "list";
 }>;
 
-export default function ResumeItem({ children, subtitle, right }: ResumeItemProps) {
-  return (
-    <div className="py-2">
-      <div className="flex justify-between items-baseline gap-4">
-        <div className="leading-snug">{children}</div>
-        {/* if exists, show right side content */}
-        {right ? <div className="flex gap-3 text-sm shrink-0">{right}</div> : null}
+export default function ResumeItem({
+  children,
+  subtitle,
+  right,
+  variant = "list",
+}: ResumeItemProps) {
+  if (variant === "experience") {
+    return (
+      <div className="experience-item">
+        <div className="experience-line">{children}</div>
+        {subtitle ? <span className="experience-date">{subtitle}</span> : null}
       </div>
+    );
+  }
 
-      {subtitle ? <p className="text-gray-500 text-sm mt-1">{subtitle}</p> : null}
+  return (
+    <div className="list-row">
+      <div className="list-main">
+        <h3>{children}</h3>
+        {subtitle ? <div className="subtitle">{subtitle}</div> : null}
+      </div>
+      {right ? <div className="flex items-baseline gap-5 shrink-0">{right}</div> : null}
     </div>
   );
 }
-
-

@@ -1,46 +1,38 @@
 "use client";
 
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+const LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/comments", label: "Comments" },
+  { href: "/contact", label: "Contact" },
+];
 
 export default function Navbar() {
   const pathname = usePathname();
 
-  const linkClass = (href: string) => (pathname === href ? "text-cyan-600" : "");
-
   return (
-    <div className="flex items-center justify-between w-full">
-      <span className="font-semibold">Jackson N</span>
-      <NavigationMenu>
-        <NavigationMenuList>
+    <nav className="site-nav">
+      <div className="nav-inner">
+        <Link href="/" className="brand-name" aria-label="Jackson N - home">
+          Jackson N
+        </Link>
 
-          <NavigationMenuItem>
-            <NavigationMenuLink>
-              <Link href="/" className={linkClass("/")} >Home</Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <NavigationMenuLink>
-              <Link href="/about" className={linkClass("/about")} >About</Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <NavigationMenuLink>
-              <Link href="/comments" className={linkClass("/comments")}>Comments</Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <NavigationMenuLink>
-              <Link href="/contact" className={linkClass("/contact")}>Contact</Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
-    </div>
+        <div className="nav-links">
+          {LINKS.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className="nav-link"
+              data-active={pathname === l.href}
+            >
+              {l.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </nav>
   );
 }

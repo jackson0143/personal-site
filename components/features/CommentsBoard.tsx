@@ -13,7 +13,7 @@ type Comment = {
   id: string;
   name: string;
   message: string;
-  createdAt: string; 
+  createdAt: string;
 };
 
 type CommentsBoardProps = {
@@ -49,8 +49,8 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <form onSubmit={onSubmit} className="space-y-3" aria-busy={submitting}>
+    <div className="flex flex-col gap-16" style={{ maxWidth: "640px" }}>
+      <form onSubmit={onSubmit} className="flex flex-col gap-6" aria-busy={submitting}>
         {/*Fake field, dont remove*/}
         <input
           type="text"
@@ -62,9 +62,9 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
           aria-hidden="true"
           className="absolute left-[-9999px] h-0 w-0 opacity-0"
         />
-        <fieldset disabled={submitting} className="space-y-3">
+        <fieldset disabled={submitting} className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
-            <label className="text-sm">Name</label>
+            <label className="field-label">Name</label>
             <Input
               type="text"
               value={name}
@@ -73,11 +73,11 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
               maxLength={50}
               autoComplete="name"
             />
-            <div className="text-xs text-muted-foreground">{name.trim().length}/50</div>
+            <div className="text-xs text-muted-foreground self-end">{name.trim().length}/50</div>
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-sm">Message</label>
+            <label className="field-label">Message</label>
             <Textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
@@ -85,7 +85,7 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
               rows={4}
               maxLength={300}
             />
-            <div className="text-xs text-muted-foreground">{message.trim().length}/300</div>
+            <div className="text-xs text-muted-foreground self-end">{message.trim().length}/300</div>
           </div>
             {/* display the error message */}
           {error ? (
@@ -93,17 +93,14 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
           ) : null}
 
           {/*submit*/}
-          <Button type="submit" variant="outline" disabled={submitting}>
+          <Button type="submit" disabled={submitting} className="self-start uppercase tracking-[0.16em] text-[0.66rem] px-6 py-5">
             {submitting ? "Submitting…" : "Post comment"}
           </Button>
         </fieldset>
       </form>
 
-
-
-      
-          {/* display comments */}
-      <div className="space-y-3">
+      {/* display comments */}
+      <div>
         {comments.map((c) => (
           <CommentsBox key={c.id} name={c.name} message={c.message} createdAt={c.createdAt} />
         ))}
