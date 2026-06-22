@@ -90,6 +90,25 @@
   --sidebar-ring: var(--blue);
 }
 
+/* Dark theme */
+.dark {
+  --cream:#1A1613;      
+  --ink:#EDE7DD;       
+  --text:#C4BCB1;      
+  --muted:#8C857B;   
+  --blue:#54A8CA;      
+  --blue-bright:#74C2E0;
+  --line:rgba(237,231,221,.13);
+  --line-2:rgba(237,231,221,.07);
+
+
+  --secondary: rgba(237,231,221,.06);
+  --accent: rgba(237,231,221,.06);
+}
+/*adjust terminal shadow for dark theme*/
+.dark .terminal { box-shadow: 0 14px 38px rgba(0,0,0,.5); }
+.dark .terminal-replay:hover { color: var(--ink); }
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -208,6 +227,8 @@
 .js .project-item.in,
 .js .list.in,
 .js .prose.in { opacity: 1; transform: none; }
+/* first-screen elements appear instantly, no fade */
+.js .reveal-instant { transition: none; }
 @media (prefers-reduced-motion: reduce) {
   .js .section-head, .js .experience-item, .js .project-item, .js .list, .js .prose {
     opacity: 1 !important; transform: none !important;
