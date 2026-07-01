@@ -219,8 +219,8 @@
 .js .project-item,
 .js .list,
 .js .prose {
-  opacity: 0; transform: translateY(20px);
-  transition: opacity .85s var(--ease), transform .85s var(--ease);
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .5s ease, transform .5s ease;
 }
 .js .section-head.in,
 .js .experience-item.in,

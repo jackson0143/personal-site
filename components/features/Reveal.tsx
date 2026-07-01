@@ -45,7 +45,7 @@ export default function Reveal() {
             }
           });
         },
-        { rootMargin: "0px 0px -10% 0px", threshold: 0.05 }
+        { rootMargin: "0px 0px -30px 0px", threshold: 0.1 }
       );
 
       below.forEach((el) => io!.observe(el));
