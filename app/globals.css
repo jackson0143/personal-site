@@ -1,27 +1,10 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-hanken);
-  --font-serif: var(--font-space);
-  --font-mono: var(--font-jetbrains);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -29,15 +12,12 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
   --radius-sm: calc(var(--radius) - 2px);
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) + 2px);
@@ -60,8 +40,6 @@
   --radius: 6px;
   --background: var(--cream);
   --foreground: var(--ink);
-  --card: var(--cream);
-  --card-foreground: var(--ink);
   --popover: var(--cream);
   --popover-foreground: var(--ink);
   --primary: var(--ink);
@@ -75,19 +53,6 @@
   --border: var(--line);
   --input: var(--line);
   --ring: var(--blue);
-  --chart-1: var(--blue);
-  --chart-2: var(--blue-bright);
-  --chart-3: var(--muted);
-  --chart-4: var(--ink);
-  --chart-5: var(--text);
-  --sidebar: var(--cream);
-  --sidebar-foreground: var(--ink);
-  --sidebar-primary: var(--ink);
-  --sidebar-primary-foreground: var(--cream);
-  --sidebar-accent: rgba(28,20,18,.04);
-  --sidebar-accent-foreground: var(--ink);
-  --sidebar-border: var(--line);
-  --sidebar-ring: var(--blue);
 }
 
 /* Dark theme */
@@ -100,7 +65,6 @@
   --blue-bright:#74C2E0;
   --line:rgba(237,231,221,.13);
   --line-2:rgba(237,231,221,.07);
-
 
   --secondary: rgba(237,231,221,.06);
   --accent: rgba(237,231,221,.06);
@@ -209,8 +173,6 @@
 .terminal-brand .flag { color: #E0B341; }
 .terminal-brand .out { color: #CFC7BD; }
 .terminal-brand .hi { color: #5FC1E0; }
-.terminal-brand .warning { color: #FF8700; }
-.terminal-brand .error { color: #AF5F5F; }
 .terminal-brand .cursor { background: #3E9CBD; }
 
 /* ---- Scroll reveal ---- */

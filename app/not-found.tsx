@@ -12,13 +12,9 @@ export default function NotFound() {
         </p>
       </div>
 
-      <div className="flex flex-wrap items-center justify-center gap-3">
-        <Button asChild>
-          <Link href="/">Go to Home</Link>
-        </Button>
-      </div>
+      <Button asChild>
+        <Link href="/">Go to Home</Link>
+      </Button>
     </section>
   );
 }
-
-

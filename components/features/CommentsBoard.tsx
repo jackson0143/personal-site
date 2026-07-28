@@ -1,51 +1,39 @@
 "use client";
 
-import * as React from "react";
-
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import CommentsBox from "@/components/features/CommentsBox";
-import { createComment } from "@/app/comments/actions";
+import { createComment, type CommentRecord } from "@/app/comments/actions";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-type Comment = {
-  id: string;
-  name: string;
-  message: string;
-  createdAt: string;
-};
 
-type CommentsBoardProps = {
-  initialComments: Comment[];
-};
+export default function CommentsBoard({
+  initialComments,
+}: {
+  initialComments: CommentRecord[];
+}) {
+  const [comments, setComments] = useState(initialComments);
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  // fake field, bots might be fooled
+  const [website, setWebsite] = useState("");
 
-export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
-    const [comments, setComments] = useState<Comment[]>(initialComments ?? []);
-    const [name, setName] = useState("");
-    const [message, setMessage] = useState("");
-    const [submitting, setSubmitting] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    // fake field, bots might be fooled
-    const [website, setWebsite] = useState("");
-
-    async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        setError(null);
-        setSubmitting(true);
-        try {
-            const trimmedName = name.trim();
-            const trimmedMessage = message.trim();
-            const created = await createComment({ name: trimmedName, message: trimmedMessage, website });
-            setComments((prev) => [created, ...prev]);
-            setName("");
-            setMessage("");
-            toast.success("Comment successfully posted");
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to post comment");
-        } finally {
-            setSubmitting(false);
-        }
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      const created = await createComment({ name, message, website });
+      setComments((prev) => [created, ...prev]);
+      setName("");
+      setMessage("");
+      toast.success("Comment successfully posted");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to post comment");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -64,8 +52,11 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
         />
         <fieldset disabled={submitting} className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
-            <label className="field-label">Name</label>
+            <label className="field-label" htmlFor="comment-name">
+              Name
+            </label>
             <Input
+              id="comment-name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -78,8 +69,11 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="field-label">Message</label>
+            <label className="field-label" htmlFor="comment-message">
+              Message
+            </label>
             <Textarea
+              id="comment-message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Say something nice…"
@@ -87,15 +81,17 @@ export default function CommentsBoard({ initialComments }: CommentsBoardProps) {
               maxLength={300}
               className="text-[15px] md:text-[15px]"
             />
-            <div className="text-xs text-muted-foreground self-end">{message.trim().length}/300</div>
+            <div className="text-xs text-muted-foreground self-end">
+              {message.trim().length}/300
+            </div>
           </div>
-            {/* display the error message */}
-          {error ? (
-            <p role="alert" className="text-xs text-red-600">{error}</p>
-          ) : null}
 
           {/*submit*/}
-          <Button type="submit" disabled={submitting} className="self-start uppercase tracking-[0.16em] text-[0.66rem] px-6 py-5">
+          <Button
+            type="submit"
+            disabled={submitting}
+            className="self-start uppercase tracking-[0.16em] text-[0.66rem] px-6 py-5"
+          >
             {submitting ? "Submitting…" : "Post comment"}
           </Button>
         </fieldset>

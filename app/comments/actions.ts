@@ -1,14 +1,19 @@
 "use server";
 
 import { PrismaClient } from "../../generated/prisma";
+import { withAccelerate } from "@prisma/extension-accelerate";
 import { headers } from "next/headers";
 import { createHash, randomUUID } from "crypto";
 import { unstable_noStore as noStore } from "next/cache";
 
-const prisma = new PrismaClient();
+//speed up performance by using prisma accelerate, no need for redis
+const prisma = new PrismaClient().$extends(withAccelerate());
 
 const DAILY_LIMIT = 5;
 const WINDOW_MS = 24 * 60 * 60 * 1000;
+
+
+const PUBLIC_FIELDS = { id: true, name: true, message: true, createdAt: true } as const;
 
 export type CommentRecord = {
   id: string;
@@ -17,19 +22,10 @@ export type CommentRecord = {
   createdAt: string;
 };
 
-function toRecord(comment: {
-  id: string;
-  name: string;
-  message: string;
-  createdAt: Date;
-}): CommentRecord {
-  return {
-    id: comment.id,
-    name: comment.name,
-    message: comment.message,
-    createdAt: comment.createdAt.toISOString(),
-  };
-}
+const toRecord = (c: { id: string; name: string; message: string; createdAt: Date }) => ({
+  ...c,
+  createdAt: c.createdAt.toISOString(),
+});
 
 function hashIp(ip: string): string {
   const salt = process.env.IP_HASH_SALT;
@@ -54,6 +50,7 @@ async function getClientIpHash(): Promise<string | null> {
 export async function getComments(): Promise<CommentRecord[]> {
   noStore();
   const comments = await prisma.comment.findMany({
+    select: PUBLIC_FIELDS,
     orderBy: { createdAt: "desc" },
   });
   return comments.map(toRecord);
@@ -99,6 +96,7 @@ export async function createComment(input: {
 
   const created = await prisma.comment.create({
     data: { name, message, ipHash },
+    select: PUBLIC_FIELDS,
   });
 
   return toRecord(created);

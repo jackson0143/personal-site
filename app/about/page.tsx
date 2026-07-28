@@ -13,7 +13,6 @@ export default function About() {
         <h2>
           About <em>me</em>
         </h2>
-        {/* <span className="section-label">Profile</span> */}
       </div>
 
       <div className="prose">

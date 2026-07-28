@@ -103,7 +103,7 @@ export default function Home() {
           </ResumeItem>
         </div>
       </ResumeSection>
-
+{/* 
       <ResumeSection title="Hackathons">
         <div className="list">
           <ResumeItem
@@ -118,7 +118,7 @@ export default function Home() {
             UNIHACK 2025
           </ResumeItem>
         </div>
-      </ResumeSection>
+      </ResumeSection> */}
     </main>
   );
 }

@@ -28,7 +28,6 @@ export default function Contact() {
         <h2>
           Get in <em>touch</em>
         </h2>
-        {/* <span className="section-label">Contact</span> */}
       </div>
 
       <div className="prose" style={{ marginBottom: "48px" }}>

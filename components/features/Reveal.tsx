@@ -16,12 +16,6 @@ export default function Reveal() {
       const els = Array.from(document.querySelectorAll<HTMLElement>(SELECTOR));
       if (els.length === 0) return;
 
-      // If IntersectionObserver is not supported, show all at once
-      if (!("IntersectionObserver" in window)) {
-        els.forEach((el) => el.classList.add("in"));
-        return;
-      }
-
       // Anything already on the first screen shows straight away. That way the top looks full
       //and they know there's more below
       const fold = window.innerHeight;
