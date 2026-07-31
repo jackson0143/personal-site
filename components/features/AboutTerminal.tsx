@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RotateCw } from "lucide-react";
 
 /**
@@ -41,14 +41,14 @@ const SCRIPT: Step[] = [
 
 export default function AboutTerminal() {
   const preRef = useRef<HTMLPreElement>(null);
-  const replayRef = useRef<(() => void) | null>(null);
+  // bumping this re-runs the effect
+  const [replay, setReplay] = useState(0);
 
   useEffect(() => {
     const pre = preRef.current;
     if (!pre) return;
 
-    // each run() claims the latest id, so a previous run
-    let runId = 0;
+    let cancelled = false;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const span = (text: string, cls: string, href?: string) => {
@@ -63,89 +63,70 @@ export default function AboutTerminal() {
       }
       return el;
     };
-    const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+      const sleep = (ms: number) =>
+      reduce ? Promise.resolve() : new Promise<void>((r) => setTimeout(r, ms));
     const fillLine = (line: HTMLElement, segs: Seg[]) =>
       segs.forEach(([t, c, h]) => line.appendChild(span(t, c, h)));
 
-    async function run() {
-      if (!pre) return;
-      const myId = ++runId;
-      const stale = () => myId !== runId;
-
+    const run = async () => {
       pre.innerHTML = "";
-      const cursor = span("", "cursor");
-      cursor.textContent = " ";
+      const cursor = span(" ", "cursor");
 
-      if (reduce) {
-        SCRIPT.forEach(({ cmd, out }) => {
-          [cmd, out].forEach((segs) => {
-            const line = span("", "line");
-            fillLine(line, segs);
-            pre.appendChild(line);
-          });
-        });
-        return;
-      }
-
-      for (let i = 0; i < SCRIPT.length; i++) {
-        const step = SCRIPT[i];
+      for (const step of SCRIPT) {
         const cmdLine = span("", "line");
         pre.appendChild(cmdLine);
         cmdLine.appendChild(cursor); // moves cursor onto this line
-        for (const seg of step.cmd) {
-          if (seg[1] === "prompt") {
-            cmdLine.insertBefore(span(seg[0], seg[1]), cursor);
-            await sleep(120);
-            if (stale()) return;
-            continue;
-          }
-          const holder = span("", seg[1]);
+        for (const [text, cls] of step.cmd) {
+          const holder = span("", cls);
           cmdLine.insertBefore(holder, cursor);
-          for (const ch of seg[0]) {
-            holder.textContent += ch;
-            await sleep(42);
-            if (stale()) return;
+          if (cls === "prompt") {
+            holder.textContent = text;
+            await sleep(120);
+            if (cancelled) return;
+          } else {
+            for (const ch of text) {
+              holder.textContent += ch;
+              await sleep(42);
+              if (cancelled) return;
+            }
           }
         }
         await sleep(330);
-        if (stale()) return;
+        if (cancelled) return;
         const outLine = span("", "line");
         fillLine(outLine, step.out);
         pre.appendChild(outLine);
         await sleep(520);
-        if (stale()) return;
+        if (cancelled) return;
       }
 
       const last = span("", "line");
       last.appendChild(span("$ ", "prompt"));
       last.appendChild(cursor);
       pre.appendChild(last);
-    }
-
-    replayRef.current = run;
-    run();
-
-    return () => {
-      runId++; // invalidate any in-flight run on unmount
-      replayRef.current = null;
     };
-  }, []);
+
+    run();
+    return () => {
+      cancelled = true; // stop any in-flight run on unmount or replay
+    };
+  }, [replay]);
 
   return (
     <section className="section about-intro">
-      <div className="terminal terminal-brand">
+      <div className="terminal">
         <div className="terminal-bar">
           <div className="terminal-dots">
-            <span className="dot1" />
-            <span className="dot2" />
-            <span className="dot3" />
+            <span />
+            <span />
+            <span />
           </div>
           <div className="terminal-bar-right">
             <span className="terminal-file">jackson@portfolio: ~</span>
             <button
               type="button"
               className="terminal-replay"
-              onClick={() => replayRef.current?.()}
+              onClick={() => setReplay((n) => n + 1)}
               aria-label="Replay"
               title="Replay"
             >
