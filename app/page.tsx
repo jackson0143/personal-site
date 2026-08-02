@@ -10,13 +10,22 @@ type Project = {
 };
 
 const PROJECTS: Project[] = [
+  // {
+  //   title: "Email-spam-classification",
+  //   tags: ["Python", "PyTorch", "Scikit-learn", "NumPy", "pandas"],
+  //   links: [
+  //     { label: "GitHub", href: "https://github.com/jackson0143/Email-spam-classification" },
+  //   ],
+  // },
+
   {
-    title: "Email-spam-classification",
-    tags: ["Python", "PyTorch", "Scikit-learn", "NumPy", "pandas"],
-    links: [
-      { label: "GitHub", href: "https://github.com/jackson0143/Email-spam-classification" },
-    ],
-  },
+  title: "bb2 - a monthly budget planner for beginners",
+  tags: ["SvelteKit", "TypeScript", "Drizzle ORM", "PostgreSQL", "Better Auth", "VPS + Caddy"],
+  links: [
+    { label: "Live", href: "https://budget.jxnlab.net" },
+  ],
+},
+
   {
     title: "StudySync",
     tags: ["Next.js", "TypeScript", "Node.js", "Supabase", "PostgreSQL"],
