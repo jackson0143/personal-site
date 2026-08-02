@@ -32,13 +32,13 @@ const PROJECTS: Project[] = [
       { label: "GitHub", href: "https://github.com/jackson0143/proxmox-dashboard-mobile" },
     ],
   },
-  {
-    title: "File Parser Form",
-    tags: ["Python", "LangChain", "OpenAI"],
-    links: [
-      { label: "GitHub", href: "https://github.com/jackson0143/File-Parser-LLM" },
-    ],
-  },
+  // {
+  //   title: "File Parser Form",
+  //   tags: ["Python", "LangChain", "OpenAI"],
+  //   links: [
+  //     { label: "GitHub", href: "https://github.com/jackson0143/File-Parser-LLM" },
+  //   ],
+  // },
 ];
 
 export default function Home() {
